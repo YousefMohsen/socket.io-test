@@ -8,49 +8,38 @@ const app = express();
 app.use(index);
 const server = http.createServer(app);
 const io = socketIo(server);
+
+
 var count = 0;
 var messagelist =['hej','med','dig']
 io.on("connection", socket => {
 
   console.log("New client connected"), 
  
- /* setInterval(
+  setInterval(
     () => getApiAndEmit(socket),
     10000
-  );*/
-  /*
+  );
+  
   setInterval(
     () => counter(socket),
     1000
   );
-*/
-setInterval(
-  () =>emitMessageList(socket)
-  ,
-  1000
-);
+
 
   socket.on("disconnect", () => console.log("Client disconnected"));
 
 
-  socket.on('sendNewMessage', function (data) {
-    messagelist.push(data)
-    console.log(data);
-  });
+
 });
 
 const counter = async socket => {
 
   count++;
+  console.log('ount',count)
   socket.emit('counter', count)
 
 }
-const emitMessageList = async socket => {
-
-  socket.emit('messageList', messagelist)
-
-}
-
 
 const getApiAndEmit = async socket => {
   try {
